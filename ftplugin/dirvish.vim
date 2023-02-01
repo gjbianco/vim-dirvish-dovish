@@ -75,7 +75,7 @@ function! s:createFile() abort
   endif
 
   " Reload the buffer
-  Dirvish %
+  call s:reloadFiles()
   call s:moveCursorTo(filename)
 endf
 
@@ -97,7 +97,7 @@ function! s:createDirectory() abort
   endif
 
   " Reload the buffer
-  Dirvish %
+  call s:reloadFiles()
   call s:moveCursorTo(dirname . '/')
 endf
 
@@ -115,7 +115,7 @@ function! s:deleteItemUnderCursor() abort
   endif
 
   " Reload the buffer
-  Dirvish %
+  call s:reloadFiles()
 endfunction
 
 function! s:renameItemUnderCursor() abort
@@ -132,7 +132,7 @@ function! s:renameItemUnderCursor() abort
   endif
 
   " Reload the buffer
-  Dirvish %
+  call s:reloadFiles()
 endfunction
 
 function! s:isPreviouslyYankedItemValid() abort
@@ -197,7 +197,7 @@ function! s:moveYankedItemToCurrentDirectory() abort
   endfor
 
   " Reload the buffer
-  Dirvish %
+  call s:reloadFiles()
 endfunction
 
 function! s:copyYankedItemToCurrentDirectory() abort
@@ -242,7 +242,7 @@ function! s:copyYankedItemToCurrentDirectory() abort
   endfor
 
   " Reload the buffer
-  Dirvish %
+  call s:reloadFiles()
 endfunction
 
 function! s:copyFilePathUnderCursor() abort
@@ -267,6 +267,10 @@ function! s:copyVisualSelection() abort
   echo msg
 endfunction
 
+function! s:reloadFiles() abort
+  Dirvish %
+endfunction
+
 function! s:logError(error) abort
   " clear any current cmdline msg
   redraw
@@ -281,6 +285,7 @@ nnoremap <silent><buffer> <Plug>(dovish_yank) :<C-U> call <SID>copyFilePathUnder
 xnoremap <silent><buffer> <Plug>(dovish_yank) :<C-U> call <SID>copyVisualSelection()<CR>
 nnoremap <silent><buffer> <Plug>(dovish_copy) :<C-U> call <SID>copyYankedItemToCurrentDirectory()<CR>
 nnoremap <silent><buffer> <Plug>(dovish_move) :<C-U> call <SID>moveYankedItemToCurrentDirectory()<CR>
+nnoremap <silent><buffer> <Plug>(dovish_reload) :<C-U> call <SID>reloadFiles()<CR>
 
 if !exists("g:dirvish_dovish_map_keys")
   let g:dirvish_dovish_map_keys = 1
@@ -310,5 +315,8 @@ if g:dirvish_dovish_map_keys
   endif
   if !hasmapto('<Plug>(dovish_move)', 'n')
     execute 'nmap <silent><buffer> PP <Plug>(dovish_move)'
+  endif
+  if !hasmapto('<Plug>(dovish_reload)', 'n')
+    execute 'nmap <silent><buffer> <C-r> <Plug>(dovish_reload)'
   endif
 endif
