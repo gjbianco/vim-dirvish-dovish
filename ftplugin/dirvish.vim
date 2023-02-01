@@ -107,7 +107,6 @@ function! s:deleteItemUnderCursor() abort
   " Feed the filepath to a delete command like, rm or trash
   let check = confirm("Delete ".target, "&Yes\n&No", 2)
   if check != 1
-    echo 'Cancelled.'
     return
   endif
   let output = system(g:DovishDelete(target))
