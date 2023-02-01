@@ -24,7 +24,7 @@ end
 
 if !exists('g:DovishDelete')
   function! g:DovishDelete(target) abort
-    return 'trash ' . shellescape(a:target)
+    return 'rm ' . shellescape(a:target)
   endfunction
 end
 
